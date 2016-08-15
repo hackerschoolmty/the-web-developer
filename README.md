@@ -28,3 +28,12 @@ Puedes ver el contenido para cada una de las semanas:
 * [Week 7: Retiro de código](Semana 7.- Retiro de codigo)
 
 **El esquema de todo el programa lo puedes encontrar [aquí](PROGRAM.md)**
+
+## Criterios de graduación
+
+En Hacker School sabemos lo importante que es terminar uno de los programas, ya que es un esfuerzo de 7 semanas que no solo se basa en la asistencia a cada una de las sesiones, sino en otros criterios que consideramos justos tanto para los mentores como los demas alumnos:
+
+1. Pago completo
+2. Resolver el 80% de los retos semanales
+3. Tener al menos 80% de asistencia a las sesiones presenciales
+4. Tu proyecto final está en tu perfil de GitHub
