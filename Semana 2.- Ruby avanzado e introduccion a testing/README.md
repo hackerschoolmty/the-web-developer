@@ -16,6 +16,15 @@ El temario durante la semana sera el siguiente:
 	* Red, green, refactor
 	* ¿Por que TDD?
 
+Listado de ejercicios:
+
+* [01](exercises/01)
+* [02](exercises/02)
+
+Retos:
+
+* [01](retos/01)
+
 ### Recursos
 
 * [¿Que es RSpec?](que-es-rspec.md)
