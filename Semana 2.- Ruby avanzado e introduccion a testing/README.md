@@ -18,6 +18,7 @@ El temario durante la semana sera el siguiente:
 
 Listado de ejercicios:
 
+* [00](exercices/00)
 * [01](exercises/01)
 * [02](exercises/02)
 
