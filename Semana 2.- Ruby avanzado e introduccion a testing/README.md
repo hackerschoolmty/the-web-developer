@@ -22,6 +22,7 @@ Listado de ejercicios:
 * [01](exercises/01)
 * [02](exercises/02)
 * [03](exercises/03)
+* [04](exercises/04)
 
 Retos:
 
