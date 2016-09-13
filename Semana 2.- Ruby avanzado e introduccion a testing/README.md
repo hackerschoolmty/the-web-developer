@@ -23,6 +23,7 @@ Listado de ejercicios:
 * [02](exercises/02)
 * [03](exercises/03)
 * [04](exercises/04)
+* [05](exercises/05)
 
 Retos:
 
