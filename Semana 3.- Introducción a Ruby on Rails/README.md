@@ -178,10 +178,19 @@ irb> Category.birds.joins(:animals).where("animals.name = ?", "Piolin")
 irb> Animal.mammals
 ```
 ### Actualizar
-
+```bash
+$ rails console
+irb> category = Category.find(1)
+irb> category.update(name: "Mammal")
+irb> category.name
+irb> category = Category.last
+irb> category.name = "Bird"
+irb> category.save
+irb> category
+```
 
 ## Controladores, Vistas
-Instalamos postman o curl
+Instalamos curl
 
 ```bash
 $ rails generate controller static home about contact
