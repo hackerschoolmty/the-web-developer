@@ -106,7 +106,7 @@ esponja  = Category.new( name: "Esponja" ).save
 lobo_wallstreet = Animal.create(name:"Lobo de Wallstreet", category_id: mamifero.id)
 pajaro_loco     = Animal.create name: "Pajaro Loco", category_id: ave.id
 piolin          = Animal.new name: "Piolin"
-piolin.category = ave
+piolin.category_id = ave.id
 piolin.save
 ```
 
@@ -127,7 +127,7 @@ irb> Animal.find_by_name(woody)
 irb> Animal.where(category_id: ave.id)
 irb> Animal.where(name: "Lobo de Wallstreet").where(category_id: ave.id)
 irb> Animal.where(name: "Piolin").where(category_id: ave.id)
-irb> aves = Animal.where(category_id.ave.id)
+irb> aves = Animal.where(category_id: ave.id)
 irb> piolin = aves.find_by_name("Lobo de Wallstreet")
 irb> piolin = aves.find_by_name("Piolin")
 
@@ -135,10 +135,10 @@ irb> piolin = aves.find_by_name("Piolin")
 ### Relaciones
 ```ruby
 # app/models/category.rb
-has_many animals
+has_many :animals
 
 # app/models/animal.rb
-belongs_to category
+belongs_to :category
 ```
 
 Una vez definidas las relaciones podemos relaizar busquedas más explicitas
@@ -157,12 +157,12 @@ como: where, join, order, etc.
 
 ```ruby
 # app/models/category.rb
-scope :mammals, -> (where(name: "Mamifero"))
-scope :birds,   -> (where(name: "Ave"))
-scope :reptil,  -> (where(name: "Reptil"))
+scope :mammals, -> {where(name: "Mamifero")}
+scope :birds,   -> {where(name: "Ave")}
+scope :reptil,  -> {where(name: "Reptil")}
 
 # app/models/animal.rb
-scope :mammals, -> (joins(:category).where("categories.name = ?", "Mamifero"))
+scope :mammals, -> {joins(:category).where("categories.name = ?", "Mamifero")}
 ```
 
 Los podemos usar mandandolos a llamar desde consola
@@ -362,7 +362,7 @@ $ curl -X PUT -d "category[name]=Mamifero" http://localhost:3000/categories/1
 
 Qué no funciona? Que marca lo mismo? AVISENME!
 
-#### Rutilizar código
+#### Reutilizar código
 
 Como nos pudimos haber dado cuenta, la sintaxis que utilizamos para solucionar
 el error de StrongParameters se puede utilizar tanto en el create como en el update
