@@ -506,17 +506,74 @@ que va a responder.
 Sin embargo podemos modificar ese comportamiento.
 
 ```ruby
-# app/controllers/animals_contrller
-def index
   render 'new'
+  # app/controllers/animals_contrller
+  def index
 end
 ```
-### Helpers
+##### render inline
+```ruby
+# app/controllers/animals_contrller
+def index
+  render plain: "OK"
+end
+```
 
-categories_urls
-link_to
-form_for
-img_tag
+```ruby
+# app/controllers/animals_contrller
+def index
+  render html: "<strong>OK</strong>"
+end
+```
+
+```ruby
+# app/controllers/animals_contrller
+def index
+  @animals = Animal.all
+  render json: @animals
+end
+```
+### Layouts
+
+```ruby
+# app/controllers/pages_controller
+class PagesController < ApplicationContoller
+  layout 'plain'
+end
+```
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Zoo</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>
+```
+
+### Helpers
+```html
+<!-- app/views/categories/index.html.erb -->
+...
+<%= categories_url %>
+<%= new_category_path %>
+<%= edit_category_path(14) %>
+<%= edit_category_path(14) %>
+
+<%= link_to categories_url        , "Categorias" %>
+<%= link_to new_category_path     , "Nueva Categoria" %>
+<%= link_to edit_category_path(14), "Editar Categoria" %>
+<%= link_to category_path(14)     ,  "Ver Categoria" %>
+...
+```
 
 ### Vistas Parciales
 Las vistas parciales son vistas que pueden ser utilizadas dentro de otras vistas.
@@ -724,7 +781,19 @@ la barra de navegación de boostrap. Sin embargo, el código queda muy feo :(.
 </html>
 ```
 ## Enrutamiento Básico
+```ruby
+get 'categorias', to: :index, controller: 'categories'
 
+namespace :admin do
+  resources :categories
+end
 
+scope '/admin' do
+  resources :categories
+end
 
+resources :categories do
+  resources :animals
+end
+```
 ## Manjeo de usuarios con devise (Esto se va a descontrolar!!)
