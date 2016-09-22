@@ -414,4 +414,72 @@ $ rails g scaffold animal
 $ rails g scaffold animal --skip db/migrate/20160919034216_create_animals.rb
 ```
 
+## Ruby on Rails y REST
+
+Ruby on rails es un Framework para hacer aplicaciones web que siguen el patron
+Model View Controller y usan una arquitectura de REST.
+
+### Que es REST?
+
+Para entender lo que significa que una aplicación web sigue una arquitectura REST
+consideremos el proyecto zoo:
+
+1. Un usuario visita la dirección http://localhost:3000/animals/new desde su navegador web.
+2. El navegador envía una petición HTTP al servidor de zoo. En este caso es Webrick
+que se ejecuta con el comando ```$ rails server ```
+3. El servidor responde con un documento HTML que contiene un formulario y
+enlaces.
+4. El usuario ingresa la info del animal y envia el formulario.
+5. El navegador envía otra petición HTTP al servidor.
+6. El servidor procesa la petición y responde con una redireción a otra página web.
+
+Este ciclo continúa hasta que el usuario deja de navegar en la aplicación. A
+excepción de algunos casos, la mayoria de los sitios web o aplicaciones web siguen
+el mismo patron.
+
+### Uniform Resourece Identifiers (URI)
+
+Lo que el usuario escribe en el navegador al inicio del ciclo anterior es un URI.
+Otra forma de llamarlo es un URL (Uniform Resource Locator). Un URI es un termino
+generalizado para referirse tanto a una ubicación o a un nombre.
+
+Un URI es el identificador de un recurso.
+
+### Resources
+
+Un recurso es cualquier cosa que puede ser identificado por un URI. En el ejemplo
+anterior la URI escrita por el usuario es la dirección de un recurso que corresponde
+a una página web. En un sitio web estático, por ejemplo, cada página web es un
+recurso.
+
+En el paso número cuarto, la parte del servidor que actualiza un Animal es otro
+recurso. El formulario HTML que se usa para enviar el formulario tiene la
+dirección (URI) de su recurso.
+
+### Representations
+
+El documento HTML que el servidor regresa al cliente es una representacion de un
+recurso. Una representación es una encapsulación de la información (estado, dato, o
+markup) del recurso, codificado usando formatos como: XML, JSON, o HTML.
+
+Un recurso puede tener una o más representaciones. Clientes y servidores usan
+'media types' para indicar el tipo de representacion para la parte que recibe
+(el cliente o el servidor). La mayoria de los sitios web o aplicaciones web usan
+el formato HTML con el 'media type' text/html. De forma similar cuando el usuario
+envía un formulario, el navegador envía una representación usando el URI y el
+'media type' application/x-www-form-urlencoded.
+
+### Uniform Interface
+
+Los clientes usan el 'Hypertext Transfer Protocol' (HTTP) para enviar peticiones
+a los recursos y obtener las respuestas. En el primer paso, el ciente envia
+una peticion GET para traer un documento HTML. En el paso cuatro el ciente envía
+una petición POST para crear un nuevo Animal.
+
+Ambos métodos (GET y POST) pertenecen a la interfaz uniforme de HTTP
+(HTTP uniform interface). El uso de la interfaz uniforme es para que las peticiones
+y las respuestas se describan a sí mismas y sean visibles. Ademas de los métodos
+mostrados en el ejemplo existen otros métodos como OPTIONS, HEAD, PUT, DELETE,
+TRACE, y CONNECT
+
 ## Manjeo de usuarios con devise (Esto se va a descontrolar!!)
