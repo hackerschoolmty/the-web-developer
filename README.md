@@ -22,7 +22,7 @@ Puedes ver el contenido para cada una de las semanas:
 * [Semana 1: Introducción a Git y Ruby](Semana 1.- Introduccion a Git y Ruby)
 * [Week 2: Ruby avanzado e introducción a testing](Semana 2.- Ruby avanzado e introduccion a testing)
 * [Week 3: Introducción a Ruby on Rails](Semana 3.- Introducción a Ruby on Rails)
-* [Week 4: Manejo de usuarios en una aplicación web)](Semana 4.- Manejo de usuarios en una aplicacion web)
+* [Week 4: Manejo de usuarios en una aplicación web](Semana 4.- Manejo de usuarios en una aplicacion web)
 * [Week 5: Tecnicas de optimización](Semana 5.- Tecnicas de optimizacion)
 * [Week 6: Tecnicas de calidad de código](Semana 6.- Tecnicas de calidad de codigo)
 * [Week 7: Retiro de código](Semana 7.- Retiro de codigo)
