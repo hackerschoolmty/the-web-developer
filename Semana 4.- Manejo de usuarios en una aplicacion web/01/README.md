@@ -2,6 +2,7 @@
 
 * [Polymorphic associations](#polymorphic-associations)
 * [Recursive associations](#recursive-associations) 
+* [Exercises](https://github.com/hackerschoolmty/the-web-developer/blob/master/Semana%204.-%20Manejo%20de%20usuarios%20en%20una%20aplicacion%20web/01/exercises.md)
 
 ## Polymorphic associations
 
@@ -20,7 +21,7 @@ The name may be daunting (Polymorphic uhhhhhh :ghost:), but there's really nothi
 First we'll need to create migrations for Person, Company & Address model: 
 
 ```ruby
-class CreatePeople < ActiveRecord::Migration[5.0]
+class CreatePeople < ActiveRecord::Migration
   def change
     create_table :people do |t|
       t.string :name
@@ -29,7 +30,7 @@ class CreatePeople < ActiveRecord::Migration[5.0]
   end
 end
 
-class CreateCompanies < ActiveRecord::Migration[5.0]
+class CreateCompanies < ActiveRecord::Migration
   def change
     create_table :companies do |t|
       t.string :name
@@ -37,7 +38,7 @@ class CreateCompanies < ActiveRecord::Migration[5.0]
   end
 end
 
-class CreateAddresses < ActiveRecord::Migration[5.0]
+class CreateAddresses < ActiveRecord::Migration
   def change
     create_table :addresses do |t|
       t.string :street
@@ -123,8 +124,7 @@ Lets think about it for a minute, a `Manager` and a `Subordinate` are also `Empl
 class Employee < ApplicationRecord
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
 
-  belongs_to :manager, class_name: "Employee", optional: true
-end
+  belongs_to :manager, class_name: "Employee"
 ```
 
 With this setup we can retrieve subordinates from an employee with `@employee.subordinates` and a employee manager with: `@employee.manager`.
