@@ -2,10 +2,12 @@ We got new requirements from our client, he says that user must have the alterna
 
 ## Exercises
 
-- Modified product form so it can be associated with other products
+
 - Add a form inside product detail (`Product#show`) so the User can be able to associate & delete pictures
 - Add a form inside users detail (`User#show`) so the User can be able to associate & delete pictures	
+- Modified product form so it can be associated with other products
 - Complete the [user stories](#user-stories)
+- **Bonus Points** Add a functionality to archive/unarchive products
 
 ## User Stories
 
