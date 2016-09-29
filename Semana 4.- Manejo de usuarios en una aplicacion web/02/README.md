@@ -1,5 +1,6 @@
 ## Table of Contents
 
+* [Migrations](#migrations)
 * [Active Job](#active-job)
 	* [Sidekiq](#sidekiq) 
 * [Rspec & Rails](#rspec--rails)
@@ -10,6 +11,158 @@
 		* [Creating a model spec](#creating-a-model-spec)
 		* [Testing non ideal results](#testing-non-ideal-results)
 		* [DRYer specs with describe and context](#dryer-specs-with-describe-and-context) 
+* [Exercises](https://github.com/hackerschoolmty/the-web-developer/blob/master/Semana%204.-%20Manejo%20de%20usuarios%20en%20una%20aplicacion%20web/02/exercises.md)
+
+## Migrations
+
+Rails encourages an agile, iterative style of development. We as developers really don't expect to get everything right the first time, migrations are the representation of this. 
+
+The purpose of migrations is to evolve the database schema of our application over time, so we don't have to write nasty sql code. 
+
+Migrations are just ruby classes place inside `db/migrate` directory. Each migration file's name starts with a number of digits and an underscore. Those digits are the key to the migration, **because they define the sequence in which the migrations are applied**
+
+
+### Generator syntax
+
+Although you could create these migration files by hand, it's easier and less prone to error to use a rails generator. Normally you would use two different generators to create a migration.
+
+* By creating a model, as we saw before the model generator creates a migration that creates the table associated to the model (you can skip the migration with --skip-migration).
+
+```bash
+$ rails g model Product
+      invoke  active_record
+      create    db/migrate/20160201210243_create_products.rb
+      create    app/models/product.rb
+      invoke    test_unit
+      create      test/models/product_test.rb
+      create      test/fixtures/products.yml
+```
+
+ * By creating a migration on its own 
+
+```bash
+$ rails g migration «migration_name» [columns optional]
+```
+
+Check the following example
+
+```bash
+$ rails g migration AddNameToProducts
+      invoke  active_record
+      create    db/migrate/20160201210312_add_name_to_product.rb
+```
+
+This will create an empty file waiting for us to put the schema manipulation, but we can also take an advantage of the migration name:
+
+>If you name your migration in UpperCamelCase like: ```AddSomethingToPluralizedTableName``` or ```RemoveSomethingToPluralizedTableName``` 
+> and add the desired columns like ```field_name:data_type another_field:data_type``` 
+> ```add_column``` and ```remove_column``` statements will be added automatically.
+
+So if we do this in our terminal
+
+```bash
+$ rails g migration AddPriceToProducts price:decimal
+      invoke  active_record
+      create    db/migrate/20160201211537_add_price_to_products.rb
+```
+
+And then we inspect the created file:
+
+```ruby
+class AddPriceToProducts < ActiveRecord::Migration
+  def change
+    add_column :products, :price, :decimal
+  end
+end
+```
+
+### Datatypes 
+
+
+```
+:binary 		=> Binary data
+:boolean 		=> True/False 1/0
+:date			=> 2015-06-03
+:datetime		=> 2015-06-03 11:20:12
+:decimal		=> 12.2340
+:float			=> 12.333 (in binary format, something like scientific notation)
+:integer		=> 1223233 -123424243
+:references	=> Associations
+:string			=> "Lorem ipsum dolor" (255)
+:text			=> "Long string"
+```
+
+### Anatomy of a migration
+
+The name of the class must match the portion of the filename after the version number, in the previous case the migration could be found in a file named called `XXXXXXXXXXXXX_some_name.rb. **Please note that no two migrations can contain the same name**
+
+Migrations are subclases of `ActiveRecord::Migration`, normally it would contain `up` and `down`methods
+
+```ruby
+class SomeName < ActiveRecord::Migration
+  def up
+    #...
+  end
+  
+  def down
+    #...
+  end
+end
+```
+
+The `up` method is responsible for applying the schema changes, while the `down` method undoes those things
+
+```ruby
+class AddNameToProduct < ActiveRecord::Migration
+  def up
+    add_column :products, :name, :string
+  end
+  
+  def down
+    remove_column :products, :name
+  end
+end
+``` 
+
+But there's a bit of duplication here isn't it? You can also use `change` method instead of `up/down` methods, see the next example:
+
+```ruby
+class AddNameToProduct < ActiveRecord::Migration
+  def change
+    add_column :products, :name, :string
+  end
+end
+```
+
+Where does `down` method go? Well when using `change` Rails will detect how to automatically undo a given operation, in this example the opposite of `add_column` is clearly `remove_column`. `change` methods will work in majority of cases
+
+There are a lot of migrations methods you can use, if you want to see a full list of migration methods check the [documentation](http://edgeguides.rubyonrails.org/active_record_migrations.html)
+
+### Running migrations
+
+Migrations are run using the `db:migrate` Rake task 
+
+```bash
+$ rake db:migrate
+== 20160201210519 AddNameToProducts: migrating ================================
+-- add_column(:products, :name, :string)
+   -> 0.0016s
+== 20160201210519 AddNameToProducts: migrated (0.0017s) =======================
+```
+
+This will basically run any pending migrations you have in your application. But how do Rails know which migrations are pending? Well let's dive into the internal of Rails.
+
+Rails mantains a table called `schema_migrations`, this table has just one column, called `version` and it will have one row per successfully applied migration. So everytime you run `rake db:migrate` the task first looks for the `schema_migrations`table and if the record doesn't exist yet, it will be created. 
+
+If you want' to undo an specific migration you can copy the version number and add it to `down` command:
+
+```bash
+$ rake db:migrate:down VERSION=20160201210519
+== 20160201210519 AddNameToProducts: reverting ================================
+-- remove_column(:products, :name, :string)
+   -> 0.0066s
+== 20160201210519 AddNameToProducts: reverted (0.0493s) =======================
+```
 
 ## Active Job
 
