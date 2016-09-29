@@ -11,11 +11,11 @@
 		* [Testing non ideal results](#testing-non-ideal-results)
 		* [DRYer specs with describe and context](#dryer-specs-with-describe-and-context) 
 
-## Active Job
+## Active Job
 
 Almost any modern application has the need for a variety of queueing services: email handling, scheduling newsletters or even database housekeeping tasks, [Active Job](http://edgeguides.rubyonrails.org/active_job_basics.html) can help you with all those tasks and more. The main point of this library is to ensure a job infraestructure for all rails applications, and for that infraestructure to be a place where you can put other gems on top, withouth having to worry about API differences.
 
-Active Job was introduced in Rails 4.2, and as with everything in rails, there's a generator:
+Active Job was introduced in Rails 4.2 so you need this or an ealier version of rails. As with everything in rails, there's a generator:
 
 ```bash
 $ rails g job Mailer
@@ -25,14 +25,14 @@ $ create  app/jobs/mailer_job.rb
 Here's what the file would look like
 
 ```ruby
-class MailerJob < ApplicationJob
+class MailerJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
-    # Do something later
   end
 end
 ```
+
 
 So if you want to send an email in a background job, you'll have to do something like this:
 
@@ -55,9 +55,11 @@ Note:
 And the you can set the job inside your controller/model:
 
 
+
 ```ruby
 MailerJob.perform_later(@user.id)
 ```
+
 
 You can also set a different time for the jobs like:
 
@@ -65,7 +67,8 @@ You can also set a different time for the jobs like:
 MailerJob.set(wait: 1.week.from_now).perform_later(@user.id)
 ```
 
-### Sidekiq
+
+### Sidekiq
 
 Like we said ActiveJob can use whichever job runners, so let's use the amazing [sidekiq](http://sidekiq.org). 
 
@@ -103,6 +106,14 @@ Now as usual we need to add it to our `Gemfile` and run `bundle install`:
 
 ```ruby
 gem 'sidekiq' 
+gem 'sinatra', :require => nil
+```
+
+Finally add the following in `config/routes.rb` file:
+
+```ruby
+require 'sidekiq/web'
+mount Sidekiq::Web => '/sidekiq'
 ```
 
 And restart your app.
@@ -137,6 +148,12 @@ You'll see an output like this:
 2016-02-20T03:50:25.656Z 48153 TID-oxo1mlzpk INFO: Booting Sidekiq 4.0.2 with redis options {:url=>nil}
 ```
 
+Now go to `localhost:3000/sidekiq` and watch the awesomeness
+
+![sidekiq](sidekiq.png)
+
+To leave sidekiq simply type `ctrl` + `c`
+
 ## Rspec & Rails
 
 *Most of this definitions and examples were taken from the great book of [Everyday Rails Testing with Rspec](http://everydayrails.com). by [Aaron Summer](https://twitter.com/ruralocity)*
@@ -154,10 +171,9 @@ Approach on testing philosophy focuses on the following foundation:
 - Tests should be reliable.
 - Tests should be easy to write
 - Tests should be easy to understand 
-In the end, though, even if your tests are not quite as optimized as they could be, are a great way to start. This approach allows to take an advantage of a fully automated test suite and using tests to drive development and remove potential bugs and edge cases.
+In the end, though, even if your tests are not quite as optimized as they could be, are a great way to start. This approach allows to take an advantage of a fully automated test suite and using tests to drive development and remove potential bugs and edge cases.
 
 ### Setting up Rspec
-
 
 We need to configure our rails applications to recognize and use RSpec and to start generating the appropriate specs  whenever we employ a Rails generator to add code to the application. 
 
@@ -205,7 +221,6 @@ test:
 production:
   <<: *default
   database: db/production.sqlite3
-
 ```
 
 You see the `test` section? That is where we configure our test database. To ensure there’s a database to talk to, run the following rake task:
