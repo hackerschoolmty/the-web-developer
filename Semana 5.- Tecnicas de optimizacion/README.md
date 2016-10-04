@@ -1,7 +1,7 @@
 ## Table of Contents
 
 * [Pagination](#pagination)
-* [Recursive associations](#recursive-associations)
+* [Counter Cache](#counter-cache)
 * [Exercises](https://github.com/hackerschoolmty/the-web-developer/blob/master/Semana%204.-%20Manejo%20de%20usuarios%20en%20una%20aplicacion%20web/01/exercises.md)
 
 ## Pagination
@@ -75,5 +75,51 @@ Here comes the magic...
 <%= paginate @products %>
 ```
 
+## Counter Cache
+
+On many occasions we need to count objects for an association
 
 
+```ruby
+class Pictures < ActiveRecord::Base
+  mount_uploader :image, AvatarUploader
+  belongs_to :picturable, polymorphic: true
+end
+
+class Product < ActiveRecord::Base
+  has_many :pictures, as: :picturable
+end
+
+```
+
+```ruby
+> Product.first.pictures.count
+Product Load (1.8ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
+(0.8ms)  SELECT COUNT(*) FROM "pictures" WHERE "pictures"."picturable_id" = $1 AND "pictures"."picturable_type" = $2  [["picturable_id", 1], ["picturable_type", "Product"]]
+=> 2
+```
+
+```ruby
+class Pictures < ActiveRecord::Base
+  mount_uploader :image, AvatarUploader
+  belongs_to :picturable, polymorphic: true, counter_cache: true
+end
+```
+
+Please be sure to add a column according to the conventions, relationship name in plural plus `_count` for example:
+
+`pictures_count`
+
+```shell
+$ rails g migration AddPicturesCountToProducts pictures_count:integer
+```
+
+Then open your migration and add the default value to zero.
+
+```ruby
+  add_column :products, :pictures_count, :integer, default: 0
+  # Just in case you have previously saved information in your models.
+  Product.all.map { |product| product.update_column(:pictures_count, product.pictures.count) }
+```
+
+And that's it!
