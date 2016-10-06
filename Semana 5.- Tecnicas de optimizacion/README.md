@@ -1,8 +1,13 @@
 ## Tecnicas de optimización
-- Eager loading
-- Counter cache
-- Paginación
-- Manejo y creación de backoffice
-- Enrutamiento avanzado (namespaces, nested resources)
+- [Sesión 1](01.md)
+  - Paginación
+  - Counter cache
+- [Sesión 2](02.md)
+  - Eager loading
+  - Manejo y creación de backoffice
+- [Sesión 3](03.md)
+  - Enrutamiento avanzado (namespaces, nested resources)
 
-[Sesión 1](01.md)
+
+
+
