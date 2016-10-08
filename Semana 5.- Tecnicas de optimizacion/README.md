@@ -4,8 +4,10 @@
   - Counter cache
 - [Sesión 2](02.md)
   - Eager loading
-  - Manejo y creación de backoffice
+  - Backoffice
+  - Exercises
 - [Sesión 3](03.md)
+  - Manejo y creación de backoffice
   - Enrutamiento avanzado (namespaces, nested resources)
 
 
